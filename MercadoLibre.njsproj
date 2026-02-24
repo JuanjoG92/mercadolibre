@@ -1,6 +1,8 @@
-<Project>
+<Project DefaultTargets="Build" xmlns="http://schemas.microsoft.com/developer/msbuild/2003">
   <PropertyGroup>
-    <DefaultTargets>Build</DefaultTargets>
+    <ProjectGuid>{C4D5E6F7-A1B2-3C4D-5E6F-7A8B9C0D1E2F}</ProjectGuid>
+    <ProjectHome>.</ProjectHome>
+    <OutputPath>.</OutputPath>
   </PropertyGroup>
   <ItemGroup>
     <Content Include="index.html" />
@@ -14,8 +16,6 @@
     <Content Include="api\init-db.php" />
     <Content Include="api\auth.php" />
     <Content Include="api\products.php" />
-    <Content Include="api\test.php" />
-    <Content Include="deploy\setup-vps.sh" />
     <Content Include=".github\copilot-instructions.md" />
   </ItemGroup>
 </Project>
