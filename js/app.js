@@ -74,7 +74,7 @@ function renderProducts(list) {
     var card=document.createElement('div');
     card.className='product-card';
     card.onclick=function(){openProductModal(p)};
-    var img=p.photo||'https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg?auto=compress&cs=tinysrgb&w=400';
+    var img=p.photo||'https://images.pexels.com/photos/1592384/pexels-photo-1592384.jpeg?auto=compress&cs=tinysrgb&w=400';
     var price=Number(p.price).toLocaleString('es');
     card.innerHTML='<div class="product-card-img">'
       +'<img src="'+img+'" alt="'+p.title+'" loading="lazy">'
@@ -122,7 +122,7 @@ function openProductModal(p) {
   var modal=document.getElementById('productModal');
   var content=document.getElementById('modalContent');
   if(!modal||!content)return;
-  var img=p.photo||'https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg?auto=compress&cs=tinysrgb&w=800';
+  var img=p.photo||'https://images.pexels.com/photos/1592384/pexels-photo-1592384.jpeg?auto=compress&cs=tinysrgb&w=800';
   var price=Number(p.price).toLocaleString('es');
   var cond=p.condition==='new'?t('modal.new'):t('modal.used');
   content.innerHTML='<button class="modal-close" onclick="closeProductModal()"><i class="fas fa-times"></i></button>'
@@ -208,7 +208,7 @@ function loadMyProducts() {
     grid.innerHTML='';
     d.products.forEach(function(p){
       var item=document.createElement('div');item.className='my-product-item';
-      var img=p.photo||'https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg?auto=compress&cs=tinysrgb&w=200';
+      var img=p.photo||'https://images.pexels.com/photos/1592384/pexels-photo-1592384.jpeg?auto=compress&cs=tinysrgb&w=200';
       item.innerHTML='<img src="'+img+'" alt="'+p.title+'">'
         +'<div class="my-product-info"><h3>'+p.title+'</h3><p>U$S '+Number(p.price).toLocaleString('es')+' · '+(p.location||'')+'</p></div>'
         +'<div class="my-product-actions"><button class="btn btn-danger" onclick="deleteProduct('+p.id+')"><i class="fas fa-trash"></i></button></div>';
@@ -237,7 +237,7 @@ function loadFavorites() {
     grid.innerHTML='';
     list.forEach(function(p){
       var card=document.createElement('div');card.className='product-card';card.onclick=function(){openProductModal(p)};
-      var img=p.photo||'https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg?auto=compress&cs=tinysrgb&w=400';
+      var img=p.photo||'https://images.pexels.com/photos/1592384/pexels-photo-1592384.jpeg?auto=compress&cs=tinysrgb&w=400';
       card.innerHTML='<div class="product-card-img"><img src="'+img+'" alt="'+p.title+'" loading="lazy"></div>'
         +'<div class="product-card-info"><div class="product-card-price"><span class="currency">U$S</span> '+Number(p.price).toLocaleString('es')+'</div>'
         +'<div class="product-card-title">'+p.title+'</div></div>';
