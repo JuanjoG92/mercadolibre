@@ -1,0 +1,21 @@
+<Project>
+  <PropertyGroup>
+    <DefaultTargets>Build</DefaultTargets>
+  </PropertyGroup>
+  <ItemGroup>
+    <Content Include="index.html" />
+    <Content Include="login.html" />
+    <Content Include="register.html" />
+    <Content Include="publish.html" />
+    <Content Include="my-products.html" />
+    <Content Include="favorites.html" />
+    <Content Include="css\app.css" />
+    <Content Include="js\app.js" />
+    <Content Include="api\init-db.php" />
+    <Content Include="api\auth.php" />
+    <Content Include="api\products.php" />
+    <Content Include="api\test.php" />
+    <Content Include="deploy\setup-vps.sh" />
+    <Content Include=".github\copilot-instructions.md" />
+  </ItemGroup>
+</Project>
