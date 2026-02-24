@@ -1,0 +1,144 @@
+﻿<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>EcoMarket - Marketplace de Vehículos Eléctricos</title>
+  <meta name="description" content="Compra y vende vehículos eléctricos, scooters, bicicletas eléctricas y más. El marketplace #1 de movilidad sustentable.">
+  <link rel="preconnect" href="https://fonts.googleapis.com">
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/app.css">
+</head>
+<body>
+
+  <!-- Top bar -->
+  <div class="topbar">
+    <div class="container topbar-inner">
+      <span><i class="fas fa-leaf"></i> Movilidad sustentable para todos</span>
+      <div class="topbar-right">
+        <div class="lang-switch">
+          <button class="lang-btn active" onclick="setLang('es')">ES</button>
+          <button class="lang-btn" onclick="setLang('en')">EN</button>
+        </div>
+        <span id="topUserArea">
+          <a href="register.html" data-i18n="nav.register">Creá tu cuenta</a>
+          <a href="login.html" data-i18n="nav.login">Ingresá</a>
+        </span>
+      </div>
+    </div>
+  </div>
+
+  <!-- Navbar -->
+  <nav class="navbar">
+    <div class="container nav-inner">
+      <a href="/" class="nav-brand">
+        <div class="logo-icon"><i class="fas fa-bolt"></i></div>
+        <span>Eco<strong>Market</strong></span>
+      </a>
+      <div class="search-bar">
+        <input type="text" id="searchInput" placeholder="Buscar vehículos eléctricos..." data-i18n-placeholder="nav.searchPlaceholder">
+        <select id="searchCategory">
+          <option value="" data-i18n="cat.all">Todas las categorías</option>
+          <option value="autos" data-i18n="cat.cars">Autos eléctricos</option>
+          <option value="motos" data-i18n="cat.motos">Motos eléctricas</option>
+          <option value="bicicletas" data-i18n="cat.bikes">Bicicletas eléctricas</option>
+          <option value="scooters" data-i18n="cat.scooters">Scooters</option>
+          <option value="repuestos" data-i18n="cat.parts">Repuestos</option>
+          <option value="accesorios" data-i18n="cat.accessories">Accesorios</option>
+        </select>
+        <button onclick="searchProducts()"><i class="fas fa-search"></i></button>
+      </div>
+      <div class="nav-actions">
+        <a href="publish.html" class="btn btn-sell" id="btnPublish"><i class="fas fa-plus"></i> <span data-i18n="nav.sell">Vender</span></a>
+        <a href="my-products.html" class="nav-icon-btn" id="btnMyProducts" title="Mis publicaciones"><i class="fas fa-box"></i></a>
+        <a href="favorites.html" class="nav-icon-btn" id="btnFavs" title="Favoritos"><i class="fas fa-heart"></i></a>
+      </div>
+      <button class="nav-toggle" onclick="document.querySelector('.search-bar').classList.toggle('open')"><i class="fas fa-search"></i></button>
+    </div>
+  </nav>
+
+  <!-- Categories bar -->
+  <div class="categories-bar">
+    <div class="container">
+      <div class="cat-scroll">
+        <a href="#" class="cat-link active" onclick="filterCategory('',this)" data-i18n="cat.all">Todos</a>
+        <a href="#" class="cat-link" onclick="filterCategory('autos',this)"><i class="fas fa-car"></i> <span data-i18n="cat.cars">Autos</span></a>
+        <a href="#" class="cat-link" onclick="filterCategory('motos',this)"><i class="fas fa-motorcycle"></i> <span data-i18n="cat.motos">Motos</span></a>
+        <a href="#" class="cat-link" onclick="filterCategory('bicicletas',this)"><i class="fas fa-bicycle"></i> <span data-i18n="cat.bikes">Bicicletas</span></a>
+        <a href="#" class="cat-link" onclick="filterCategory('scooters',this)"><i class="fas fa-person-skating"></i> <span data-i18n="cat.scooters">Scooters</span></a>
+        <a href="#" class="cat-link" onclick="filterCategory('repuestos',this)"><i class="fas fa-gear"></i> <span data-i18n="cat.parts">Repuestos</span></a>
+        <a href="#" class="cat-link" onclick="filterCategory('accesorios',this)"><i class="fas fa-helmet-safety"></i> <span data-i18n="cat.accessories">Accesorios</span></a>
+      </div>
+    </div>
+  </div>
+
+  <!-- Hero Banner -->
+  <section class="hero-banner">
+    <div class="container">
+      <div class="banner-slide" style="background:linear-gradient(135deg,#0f766e,#065f46)">
+        <div class="banner-text">
+          <span class="banner-badge"><i class="fas fa-bolt"></i> <span data-i18n="hero.badge">Vehículos eléctricos</span></span>
+          <h1 data-i18n="hero.title">El futuro de la movilidad está acá</h1>
+          <p data-i18n="hero.desc">Comprá y vendé vehículos eléctricos de forma segura. Autos, motos, bicicletas, scooters y más.</p>
+          <a href="#products" class="btn btn-primary" data-i18n="hero.cta">Ver publicaciones</a>
+        </div>
+        <div class="banner-img">
+          <img src="https://images.pexels.com/photos/110844/pexels-photo-110844.jpeg?auto=compress&cs=tinysrgb&w=600" alt="Auto eléctrico">
+        </div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Products Grid -->
+  <section class="section" id="products">
+    <div class="container">
+      <div class="section-header-row">
+        <h2 data-i18n="prod.title">Publicaciones</h2>
+        <div class="sort-bar">
+          <select id="sortSelect" onchange="sortProducts()">
+            <option value="newest" data-i18n="sort.newest">Más recientes</option>
+            <option value="price_asc" data-i18n="sort.priceAsc">Menor precio</option>
+            <option value="price_desc" data-i18n="sort.priceDesc">Mayor precio</option>
+          </select>
+        </div>
+      </div>
+      <div class="products-grid" id="productsGrid">
+        <div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1"><i class="fas fa-spinner fa-spin"></i></div>
+      </div>
+    </div>
+  </section>
+
+  <!-- Product Detail Modal -->
+  <div id="productModal" class="modal" style="display:none">
+    <div class="modal-backdrop" onclick="closeProductModal()"></div>
+    <div class="modal-content" id="modalContent"></div>
+  </div>
+
+  <!-- Footer -->
+  <footer class="footer">
+    <div class="container footer-inner">
+      <div class="footer-brand">
+        <div class="nav-brand"><div class="logo-icon"><i class="fas fa-bolt"></i></div><span>Eco<strong>Market</strong></span></div>
+        <p data-i18n="footer.desc">El marketplace #1 de movilidad eléctrica.</p>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.categories">Categorías</h4>
+        <a href="#" onclick="filterCategory('autos')" data-i18n="cat.cars">Autos eléctricos</a>
+        <a href="#" onclick="filterCategory('motos')" data-i18n="cat.motos">Motos eléctricas</a>
+        <a href="#" onclick="filterCategory('bicicletas')" data-i18n="cat.bikes">Bicicletas eléctricas</a>
+        <a href="#" onclick="filterCategory('scooters')" data-i18n="cat.scooters">Scooters</a>
+      </div>
+      <div class="footer-links">
+        <h4 data-i18n="footer.help">Ayuda</h4>
+        <a href="#">Cómo comprar</a>
+        <a href="#">Cómo vender</a>
+        <a href="#">Contacto</a>
+      </div>
+      <div class="footer-copy">&copy; 2025 EcoMarket. <span data-i18n="footer.rights">Todos los derechos reservados.</span></div>
+    </div>
+  </footer>
+
+  <script src="js/app.js"></script>
+</body>
+</html>
