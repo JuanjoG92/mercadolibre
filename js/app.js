@@ -12,7 +12,13 @@ var L = {
     'my.title':'Mis publicaciones','my.empty':'No tenés publicaciones aún.','my.delete':'Eliminar','my.edit':'Editar',
     'footer.desc':'El marketplace #1 de movilidad eléctrica.','footer.categories':'Categorías','footer.help':'Ayuda','footer.rights':'Todos los derechos reservados.',
     'nav.myAccount':'Mi cuenta','nav.logout':'Salir','nav.myProducts':'Mis publicaciones',
-    'fav.title':'Mis favoritos','fav.empty':'No tenés favoritos aún.'
+    'fav.title':'Mis favoritos','fav.empty':'No tenés favoritos aún.',
+    'topbar.slogan':'Movilidad sustentable para todos',
+    'footer.howBuy':'Cómo comprar','footer.howSell':'Cómo vender','footer.contact':'Contacto',
+    'nav.back':'Volver','prod.empty':'No hay publicaciones','confirm.delete':'¿Eliminar esta publicación?',
+    'modal.shipAll':'a todo el país','modal.buyingSoon':'Función de compra próximamente','modal.chatSoon':'Función de mensajería próximamente',
+    'pub.catAutos':'Autos eléctricos','pub.catMotos':'Motos eléctricas','pub.catBikes':'Bicicletas eléctricas','pub.catScooters':'Scooters','pub.catParts':'Repuestos','pub.catAccs':'Accesorios','pub.new':'Nuevo','pub.used':'Usado',
+    'reg.noMatch':'Contraseñas no coinciden'
   },
   en: {
     'nav.register':'Create account','nav.login':'Log in','nav.sell':'Sell','nav.searchPlaceholder':'Search electric vehicles...',
@@ -26,7 +32,13 @@ var L = {
     'my.title':'My listings','my.empty':'No listings yet.','my.delete':'Delete','my.edit':'Edit',
     'footer.desc':'The #1 electric mobility marketplace.','footer.categories':'Categories','footer.help':'Help','footer.rights':'All rights reserved.',
     'nav.myAccount':'My account','nav.logout':'Log out','nav.myProducts':'My listings',
-    'fav.title':'My favorites','fav.empty':'No favorites yet.'
+    'fav.title':'My favorites','fav.empty':'No favorites yet.',
+    'topbar.slogan':'Sustainable mobility for everyone',
+    'footer.howBuy':'How to buy','footer.howSell':'How to sell','footer.contact':'Contact',
+    'nav.back':'Back','prod.empty':'No listings found','confirm.delete':'Delete this listing?',
+    'modal.shipAll':'nationwide','modal.buyingSoon':'Purchase feature coming soon','modal.chatSoon':'Messaging feature coming soon',
+    'pub.catAutos':'Electric cars','pub.catMotos':'Electric motorcycles','pub.catBikes':'Electric bicycles','pub.catScooters':'Scooters','pub.catParts':'Parts','pub.catAccs':'Accessories','pub.new':'New','pub.used':'Used',
+    'reg.noMatch':'Passwords do not match'
   }
 };
 var currentLang = localStorage.getItem('em_lang') || 'es';
@@ -68,7 +80,7 @@ function loadProducts() {
 function renderProducts(list) {
   var grid=document.getElementById('productsGrid');
   if(!grid)return;
-  if(list.length===0){grid.innerHTML='<div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1"><i class="fas fa-box-open" style="font-size:2rem;display:block;margin-bottom:.5rem;opacity:.4"></i>No hay publicaciones</div>';return;}
+  if(list.length===0){grid.innerHTML='<div style="text-align:center;padding:3rem;color:var(--gray);grid-column:1/-1"><i class="fas fa-box-open" style="font-size:2rem;display:block;margin-bottom:.5rem;opacity:.4"></i>'+t('prod.empty')+'</div>';return;}
   grid.innerHTML='';
   list.forEach(function(p){
     var card=document.createElement('div');
@@ -133,10 +145,10 @@ function openProductModal(p) {
     +'<h2 class="modal-title">'+p.title+'</h2>'
     +'<div class="modal-price">U$S '+price+'</div>'
     +'<div class="modal-installments">'+t('modal.freeShip')+'</div>'
-    +'<div class="modal-shipping"><i class="fas fa-truck"></i> '+t('modal.freeShip')+' a todo el país</div>'
+    +'<div class="modal-shipping"><i class="fas fa-truck"></i> '+t('modal.freeShip')+' '+t('modal.shipAll')+'</div>'
     +'<div class="modal-seller"><h4><i class="fas fa-store"></i> '+(p.seller_name||t('modal.seller'))+'</h4><p><i class="fas fa-map-marker-alt"></i> '+(p.location||'')+'</p></div>'
     +'<div class="modal-actions">'
-    +'<button class="btn btn-primary" onclick="alert(\'Función de compra próximamente\')"><i class="fas fa-shopping-cart"></i> '+t('modal.buy')+'</button>'
+    +'<button class="btn btn-primary" onclick="alert(t(\'modal.buyingSoon\'))"><i class="fas fa-shopping-cart"></i> '+t('modal.buy')+'</button>'
     +'<button class="btn btn-outline" onclick="contactSeller('+p.id+')"><i class="fas fa-comment"></i> '+t('modal.contact')+'</button>'
     +'</div></div></div>'
     +'<div class="modal-specs"><h3>'+t('modal.specs')+'</h3><table>'
@@ -152,13 +164,13 @@ function openProductModal(p) {
   document.body.style.overflow='hidden';
 }
 function closeProductModal() { var m=document.getElementById('productModal');if(m)m.style.display='none';document.body.style.overflow=''; }
-function contactSeller(id){alert('Función de mensajería próximamente');}
+function contactSeller(id){alert(t('modal.chatSoon'));}
 document.addEventListener('keydown',function(e){if(e.key==='Escape')closeProductModal()});
 
 // Register
 function handleRegister(e) {
   e.preventDefault();var f=e.target;
-  if(f.password.value!==f.confirm.value){showAlert('regAlert','Contraseñas no coinciden','error');return;}
+  if(f.password.value!==f.confirm.value){showAlert('regAlert',t('reg.noMatch'),'error');return;}
   var btn=f.querySelector('button[type=submit]');btn.disabled=true;btn.innerHTML='<i class="fas fa-spinner fa-spin"></i>';
   fetch('api/auth.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'register',name:f.name.value.trim(),email:f.email.value.trim(),password:f.password.value,location:f.location?f.location.value:''})})
   .then(function(r){return r.text()})
@@ -217,7 +229,7 @@ function loadMyProducts() {
   });
 }
 function deleteProduct(id) {
-  if(!confirm('¿Eliminar esta publicación?'))return;
+  if(!confirm(t('confirm.delete')))return;
   var u=getUser();
   fetch('api/products.php',{method:'POST',headers:{'Content-Type':'application/json'},body:JSON.stringify({action:'delete',product_id:id,user_id:u.id,token:localStorage.getItem('em_token')})})
   .then(function(r){return r.json()})

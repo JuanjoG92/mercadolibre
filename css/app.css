@@ -167,22 +167,54 @@ a{text-decoration:none;color:inherit}
 
 /* Responsive */
 @media(max-width:768px){
-  .topbar-inner{font-size:.7rem}
+  .topbar-inner{font-size:.7rem;flex-wrap:wrap;gap:.25rem;justify-content:center}
+  .topbar-right{gap:.5rem}
+  .topbar-right a{margin-left:.4rem;font-size:.7rem}
+  .search-bar{display:none;position:absolute;top:100%;left:0;right:0;height:44px;border-radius:0;z-index:99;box-shadow:0 4px 12px rgba(0,0,0,.15)}
+  .search-bar.open{display:flex}
   .search-bar select{display:none}
+  .nav-inner{position:relative;flex-wrap:nowrap}
   .nav-toggle{display:block}
+  .nav-actions{gap:.3rem}
   .nav-actions .btn-sell span{display:none}
+  .nav-actions .btn-sell{padding:.45rem .6rem}
+  .nav-icon-btn{font-size:1rem;padding:.3rem}
   .banner-slide{flex-direction:column;text-align:center;padding:1.5rem}
-  .banner-img img{width:200px;height:130px}
+  .banner-img{display:none}
   .banner-text h1{font-size:1.3rem}
+  .banner-text p{margin-left:auto;margin-right:auto}
   .products-grid{grid-template-columns:repeat(2,1fr);gap:.5rem}
   .product-card-img{height:140px}
+  .product-card-fav{width:28px;height:28px;font-size:.75rem}
+  .modal{padding:0}
+  .modal-content{border-radius:0;min-height:100vh}
   .modal-grid{grid-template-columns:1fr}
   .modal-gallery img{height:260px}
-  .footer-inner{grid-template-columns:1fr}
+  .modal-details{padding:1rem}
+  .modal-price{font-size:1.5rem}
+  .modal-title{font-size:1rem}
+  .modal-specs{padding:1rem}
+  .modal-desc{padding:1rem}
+  .footer-inner{grid-template-columns:1fr;gap:1.5rem}
+  .my-product-item{flex-wrap:wrap}
+  .my-product-item img{width:60px;height:60px}
+  .my-product-info h3{font-size:.85rem}
+  .form-row{grid-template-columns:1fr}
+  .publish-page{margin:1rem auto}
+  .publish-card{padding:1rem}
+  .auth-page{padding:1rem}
+  .auth-card{padding:1.5rem}
 }
 @media(max-width:480px){
-  .products-grid{grid-template-columns:repeat(2,1fr)}
+  .topbar-inner{font-size:.65rem}
+  .products-grid{grid-template-columns:repeat(2,1fr);gap:.4rem}
   .product-card-info{padding:.5rem}
-  .product-card-price{font-size:1rem}
-  .product-card-title{font-size:.75rem}
+  .product-card-price{font-size:.95rem}
+  .product-card-title{font-size:.72rem}
+  .product-card-meta{font-size:.6rem}
+  .free-shipping{font-size:.6rem}
+  .cat-scroll{gap:.15rem}
+  .cat-link{padding:.3rem .6rem;font-size:.7rem}
+  .section-header-row{flex-direction:column;align-items:flex-start;gap:.5rem}
+  .section-header-row h2{font-size:1.1rem}
 }
