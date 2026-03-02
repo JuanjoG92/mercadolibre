@@ -1,0 +1,185 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0, maximum-scale=1.0, user-scalable=no">
+  <title>EcoMarket - Admin</title>
+  <link href="https://fonts.googleapis.com/css2?family=Inter:wght@400;500;600;700;800&display=swap" rel="stylesheet">
+  <link rel="stylesheet" href="https://cdnjs.cloudflare.com/ajax/libs/font-awesome/6.5.1/css/all.min.css">
+  <link rel="stylesheet" href="css/admin.css">
+  <link rel="manifest" href="manifest.json">
+  <meta name="apple-mobile-web-app-capable" content="yes">
+  <meta name="apple-mobile-web-app-status-bar-style" content="black-translucent">
+  <meta name="theme-color" content="#0f766e">
+</head>
+<body>
+
+  <!-- ===== PIN LOGIN ===== -->
+  <div id="loginView" class="view">
+    <div class="login-box">
+      <div class="login-logo"><i class="fas fa-bolt"></i></div>
+      <h1>EcoMarket</h1>
+      <p class="login-subtitle" data-i18n="admin.enterPin">Ingrese el PIN de administrador</p>
+      <div id="loginAlert" class="admin-alert" style="display:none"></div>
+      <input type="password" id="pinInput" class="pin-input" maxlength="20" placeholder="PIN" inputmode="numeric" autocomplete="off">
+      <button class="admin-btn admin-btn-primary" onclick="verifyPin()">
+        <i class="fas fa-lock-open"></i> <span data-i18n="admin.enter">Ingresar</span>
+      </button>
+    </div>
+  </div>
+
+  <!-- ===== ADMIN PANEL ===== -->
+  <div id="panelView" class="view" style="display:none">
+
+    <!-- Header -->
+    <header class="admin-header">
+      <div class="admin-header-inner">
+        <div class="admin-brand">
+          <i class="fas fa-bolt"></i> Eco<strong>Market</strong>
+          <span class="admin-badge">Admin</span>
+        </div>
+        <div class="admin-header-actions">
+          <div class="lang-switch">
+            <button class="lang-btn active" onclick="setAdminLang('es')">ES</button>
+            <button class="lang-btn" onclick="setAdminLang('en')">EN</button>
+          </div>
+          <button class="admin-btn-icon" onclick="adminLogout()" title="Salir">
+            <i class="fas fa-sign-out-alt"></i>
+          </button>
+        </div>
+      </div>
+    </header>
+
+    <!-- Stats -->
+    <div class="stats-row">
+      <div class="stat-card">
+        <div class="stat-number" id="statTotal">0</div>
+        <div class="stat-label" data-i18n="admin.totalProducts">Total productos</div>
+      </div>
+      <div class="stat-card stat-active">
+        <div class="stat-number" id="statActive">0</div>
+        <div class="stat-label" data-i18n="admin.active">Activos</div>
+      </div>
+      <div class="stat-card stat-paused">
+        <div class="stat-number" id="statPaused">0</div>
+        <div class="stat-label" data-i18n="admin.paused">Pausados</div>
+      </div>
+    </div>
+
+    <!-- Tabs -->
+    <div class="admin-tabs">
+      <button class="admin-tab active" id="tabProducts" onclick="showTab('products')">
+        <i class="fas fa-box"></i> <span data-i18n="admin.products">Productos</span>
+      </button>
+      <button class="admin-tab" id="tabAdd" onclick="showTab('add')">
+        <i class="fas fa-plus-circle"></i> <span data-i18n="admin.addNew">Agregar</span>
+      </button>
+    </div>
+
+    <!-- Products List -->
+    <div id="productsView" class="admin-content">
+      <div class="admin-search">
+        <input type="text" id="adminSearch" placeholder="Buscar producto..." data-i18n-placeholder="admin.search" oninput="filterAdminProducts()">
+      </div>
+      <div id="adminProductsList"></div>
+    </div>
+
+    <!-- Add/Edit Form -->
+    <div id="formView" class="admin-content" style="display:none">
+      <h2 id="formTitle" data-i18n="admin.addProduct">Agregar producto</h2>
+      <div id="formAlert" class="admin-alert" style="display:none"></div>
+      <form id="adminForm" onsubmit="handleAdminSubmit(event)">
+        <input type="hidden" id="editId" value="">
+
+        <div class="admin-field">
+          <label data-i18n="admin.title">Título *</label>
+          <input type="text" id="fTitle" required placeholder="Ej: Tesla Model 3 2023">
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.price">Precio (USD) *</label>
+          <input type="number" id="fPrice" required min="1" step="0.01" inputmode="decimal">
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.category">Categoría</label>
+          <select id="fCategory">
+            <option value="autos">Autos eléctricos</option>
+            <option value="motos">Motos eléctricas</option>
+            <option value="bicicletas">Bicicletas eléctricas</option>
+            <option value="scooters">Scooters</option>
+            <option value="repuestos">Repuestos</option>
+            <option value="accesorios">Accesorios</option>
+          </select>
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.condition">Condición</label>
+          <select id="fCondition">
+            <option value="new">Nuevo</option>
+            <option value="used">Usado</option>
+          </select>
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.brand">Marca</label>
+          <input type="text" id="fBrand" placeholder="Ej: Tesla, BYD, Xiaomi">
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.model">Modelo</label>
+          <input type="text" id="fModel" placeholder="Ej: Model 3, Dolphin">
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.photoUrl">Foto (URL de imagen)</label>
+          <input type="url" id="fPhoto" placeholder="https://...">
+          <div id="photoPreview" class="photo-preview"></div>
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.location">Ubicación</label>
+          <input type="text" id="fLocation" placeholder="Ej: Buenos Aires, Argentina">
+        </div>
+
+        <div class="admin-field">
+          <label data-i18n="admin.description">Descripción</label>
+          <textarea id="fDescription" rows="4" placeholder="..."></textarea>
+        </div>
+
+        <!-- Optional fields -->
+        <button type="button" class="admin-btn-link" onclick="toggleOptional()">
+          <i class="fas fa-chevron-down" id="optionalIcon"></i>
+          <span data-i18n="admin.moreOptions">Más opciones</span>
+        </button>
+        <div id="optionalFields" style="display:none">
+          <div class="admin-field">
+            <label data-i18n="admin.year">Año</label>
+            <input type="number" id="fYear" min="2000" max="2030" inputmode="numeric">
+          </div>
+          <div class="admin-field">
+            <label data-i18n="admin.range">Autonomía (km)</label>
+            <input type="text" id="fRange" placeholder="Ej: 500">
+          </div>
+          <div class="admin-field">
+            <label data-i18n="admin.battery">Batería</label>
+            <input type="text" id="fBattery" placeholder="Ej: 60 kWh Litio">
+          </div>
+        </div>
+
+        <div class="form-actions">
+          <button type="submit" class="admin-btn admin-btn-primary admin-btn-lg">
+            <i class="fas fa-save"></i> <span data-i18n="admin.save">Guardar</span>
+          </button>
+          <button type="button" class="admin-btn admin-btn-secondary admin-btn-lg" onclick="cancelForm()">
+            <i class="fas fa-times"></i> <span data-i18n="admin.cancel">Cancelar</span>
+          </button>
+        </div>
+      </form>
+    </div>
+
+  </div>
+
+  <script src="js/admin.js"></script>
+</body>
+</html>
