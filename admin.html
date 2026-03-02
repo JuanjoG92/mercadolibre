@@ -132,8 +132,19 @@
         </div>
 
         <div class="admin-field">
-          <label data-i18n="admin.photoUrl">Foto (URL de imagen)</label>
-          <input type="url" id="fPhoto" placeholder="https://...">
+          <label data-i18n="admin.photo">Foto</label>
+          <div class="photo-upload-area">
+            <button type="button" class="photo-upload-btn" onclick="document.getElementById('fPhotoFile').click()">
+              <i class="fas fa-camera"></i>
+              <span data-i18n="admin.takePhoto">Tomar foto o elegir imagen</span>
+            </button>
+            <input type="file" id="fPhotoFile" accept="image/*" capture="environment" style="display:none" onchange="handlePhotoUpload(this)">
+            <div class="photo-divider"><span data-i18n="admin.orPasteUrl">o pegar URL</span></div>
+            <input type="url" id="fPhoto" class="photo-url-input" placeholder="https://...">
+          </div>
+          <div id="photoUploading" class="photo-uploading" style="display:none">
+            <i class="fas fa-spinner fa-spin"></i> <span data-i18n="admin.uploading">Subiendo foto...</span>
+          </div>
           <div id="photoPreview" class="photo-preview"></div>
         </div>
 

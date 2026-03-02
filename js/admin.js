@@ -21,7 +21,13 @@ var AL = {
     'admin.condition':'Condición',
     'admin.brand':'Marca',
     'admin.model':'Modelo',
-    'admin.photoUrl':'Foto (URL de imagen)',
+    'admin.photo':'Foto',
+    'admin.takePhoto':'Tomar foto o elegir imagen',
+    'admin.orPasteUrl':'o pegar URL',
+    'admin.uploading':'Subiendo foto...',
+    'admin.uploadError':'Error al subir foto',
+    'admin.photoUploaded':'¡Foto subida!',
+    'admin.removePhoto':'Quitar foto',
     'admin.location':'Ubicación',
     'admin.description':'Descripción',
     'admin.moreOptions':'Más opciones',
@@ -72,7 +78,13 @@ var AL = {
     'admin.condition':'Condition',
     'admin.brand':'Brand',
     'admin.model':'Model',
-    'admin.photoUrl':'Photo (image URL)',
+    'admin.photo':'Photo',
+    'admin.takePhoto':'Take photo or choose image',
+    'admin.orPasteUrl':'or paste URL',
+    'admin.uploading':'Uploading photo...',
+    'admin.uploadError':'Error uploading photo',
+    'admin.photoUploaded':'Photo uploaded!',
+    'admin.removePhoto':'Remove photo',
     'admin.location':'Location',
     'admin.description':'Description',
     'admin.moreOptions':'More options',
@@ -313,6 +325,8 @@ function resetForm() {
   document.getElementById('fBrand').value = '';
   document.getElementById('fModel').value = '';
   document.getElementById('fPhoto').value = '';
+  document.getElementById('fPhotoFile').value = '';
+  document.getElementById('photoUploading').style.display = 'none';
   document.getElementById('fLocation').value = '';
   document.getElementById('fDescription').value = '';
   document.getElementById('fYear').value = '';
@@ -343,7 +357,7 @@ function editProduct(id) {
   document.getElementById('fRange').value = p.range_km || '';
   document.getElementById('fBattery').value = p.battery || '';
   if (p.photo) {
-    document.getElementById('photoPreview').innerHTML = '<img src="' + p.photo + '" alt="">';
+    showPhotoPreview(p.photo);
   } else {
     document.getElementById('photoPreview').innerHTML = '';
   }
@@ -448,18 +462,67 @@ function doDelete(id) {
   });
 }
 
-// ----- Photo Preview -----
+// ----- Photo Upload -----
+function handlePhotoUpload(input) {
+  if (!input.files || !input.files[0]) return;
+  var file = input.files[0];
+  if (file.size > 5 * 1024 * 1024) {
+    showAdminAlert('formAlert', at('admin.uploadError') + ' (max 5MB)', 'error');
+    input.value = '';
+    return;
+  }
+  var uploading = document.getElementById('photoUploading');
+  uploading.style.display = 'flex';
+  var formData = new FormData();
+  formData.append('photo', file);
+  formData.append('pin', adminPin);
+  fetch('api/upload.php', { method: 'POST', body: formData })
+  .then(function(r) { return r.json(); })
+  .then(function(res) {
+    uploading.style.display = 'none';
+    if (res.success && res.url) {
+      document.getElementById('fPhoto').value = res.url;
+      showPhotoPreview(res.url);
+    } else {
+      showAdminAlert('formAlert', at('admin.uploadError') + ': ' + (res.error || ''), 'error');
+    }
+  })
+  .catch(function() {
+    uploading.style.display = 'none';
+    showAdminAlert('formAlert', at('admin.uploadError'), 'error');
+  });
+  input.value = '';
+}
+
+function showPhotoPreview(url) {
+  var preview = document.getElementById('photoPreview');
+  if (url) {
+    preview.innerHTML = '<img src="' + url + '" alt="" onerror="this.parentNode.innerHTML=\'\'">'
+      + '<button type="button" class="photo-remove" onclick="clearPhoto()" title="' + at('admin.removePhoto') + '"><i class="fas fa-times"></i></button>';
+  } else {
+    preview.innerHTML = '';
+  }
+}
+
+function clearPhoto() {
+  document.getElementById('fPhoto').value = '';
+  document.getElementById('photoPreview').innerHTML = '';
+}
+
 function setupPhotoPreview() {
   var input = document.getElementById('fPhoto');
   if (!input) return;
+  var debounce = null;
   input.addEventListener('input', function() {
     var url = this.value.trim();
-    var preview = document.getElementById('photoPreview');
-    if (url && (url.indexOf('http://') === 0 || url.indexOf('https://') === 0)) {
-      preview.innerHTML = '<img src="' + url + '" alt="" onerror="this.parentNode.innerHTML=\'\'">';
-    } else {
-      preview.innerHTML = '';
-    }
+    clearTimeout(debounce);
+    debounce = setTimeout(function() {
+      if (url && (url.indexOf('http://') === 0 || url.indexOf('https://') === 0 || url.indexOf('uploads/') === 0)) {
+        showPhotoPreview(url);
+      } else {
+        document.getElementById('photoPreview').innerHTML = '';
+      }
+    }, 500);
   });
 }
 
