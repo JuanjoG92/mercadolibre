@@ -53,5 +53,9 @@
   ],
   "id": "/",
   "scope": "/",
-  "lang": "es"
+  "lang": "es",
+  "categories": [
+    "shopping",
+    "lifestyle"
+  ]
 }
