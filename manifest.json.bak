@@ -1,0 +1,20 @@
+﻿{
+  "name": "EcoMarket - Marketplace de VehÃ­culos ElÃ©ctricos",
+  "short_name": "EcoMarket",
+  "description": "Compra y vende vehÃ­culos elÃ©ctricos, scooters, bicicletas elÃ©ctricas y mÃ¡s.",
+  "start_url": "/",
+  "display": "standalone",
+  "orientation": "portrait",
+  "theme_color": "#0f766e",
+  "background_color": "#f5f5f5",
+  "icons": [
+    { "src": "media/icons/icon-72.svg", "sizes": "72x72", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-96.svg", "sizes": "96x96", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-128.svg", "sizes": "128x128", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-144.svg", "sizes": "144x144", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-152.svg", "sizes": "152x152", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-192.svg", "sizes": "192x192", "type": "image/svg+xml", "purpose": "any maskable" },
+    { "src": "media/icons/icon-384.svg", "sizes": "384x384", "type": "image/svg+xml" },
+    { "src": "media/icons/icon-512.svg", "sizes": "512x512", "type": "image/svg+xml", "purpose": "any maskable" }
+  ]
+}
